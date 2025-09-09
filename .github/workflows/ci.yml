@@ -27,15 +27,12 @@ jobs:
         run: dart pub get
         working-directory: packages/${{ matrix.package }}
 
-      - name: Install covered tool
-        run: dart pub global activate covered
-
       - name: Run tests with coverage
         run: dart test --coverage=coverage
         working-directory: packages/${{ matrix.package }}
 
-      - name: Generate coverage report with covered
-        run: covered
+      - name: Generate coverage report
+        run: dart run coverage:format_coverage -i coverage -o coverage/lcov.info --lcov
         working-directory: packages/${{ matrix.package }}
 
       - name: Upload coverage
