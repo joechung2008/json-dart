@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        dart-version: ["3.9.x"]
+        dart-version: ["3.9.2"]
         package: ["console_app", "server_app", "shared_lib"]
 
     steps:

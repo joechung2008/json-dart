@@ -5,7 +5,7 @@ repository: https://github.com/joechung2008/json-dart
 publish_to: none
 
 environment:
-  sdk: ^3.9.2
+  sdk: '>=3.9.0 <4.0.0'
 
 resolution: workspace
 
