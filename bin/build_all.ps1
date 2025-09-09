@@ -1,4 +1,5 @@
 Write-Host "Building all executables..."
-dart compile exe packages/console_app/bin/console_app.dart
-dart compile exe packages/server_app/bin/server.dart
+if (!(Test-Path out)) { mkdir out | Out-Null }
+dart compile exe -o out/console_app.exe packages/console_app/bin/console_app.dart
+dart compile exe -o out/server.exe packages/server_app/bin/server.dart
 Write-Host "Build complete."
