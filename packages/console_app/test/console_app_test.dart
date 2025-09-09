@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
 void main() {
@@ -66,10 +67,19 @@ Future<ProcessResult> runConsoleApp(String input) async {
   // Use relative path since working directory is console_app
   final scriptPath = 'bin/console_app.dart';
 
+  final currentDir = Directory.current.path;
+
+  // Determine the working directory for the console process:
+  // - If already in 'console_app' directory, use current directory (null)
+  // - Otherwise, use relative path to console_app from workspace root
+  final workingDir = path.basename(currentDir) == 'console_app'
+      ? null
+      : path.join('packages', 'console_app');
+
   // Start the Dart process
   final process = await Process.start('dart', [
     scriptPath,
-  ], workingDirectory: Directory.current.path);
+  ], workingDirectory: workingDir);
 
   // Write input to stdin
   process.stdin.writeln(input);
