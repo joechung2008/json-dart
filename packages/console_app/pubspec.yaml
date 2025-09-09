@@ -1,19 +1,16 @@
 name: console_app
 description: A command-line JSON parser that reads from stdin and pretty-prints parse trees.
 version: 1.0.0
+license: MIT
 repository: https://github.com/joechung2008/json-dart
 publish_to: none
-
 environment:
   sdk: '>=3.9.0 <4.0.0'
-
 resolution: workspace
-
 dependencies:
   path: ^1.9.0
   shared_lib:
     path: ../shared_lib
-
 dev_dependencies:
   coverage: ^1.8.0
   lints: ^6.0.0
