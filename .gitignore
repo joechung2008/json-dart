@@ -1,0 +1,36 @@
+# Dart build and tool artifacts
+.dart_tool/
+build/
+.pub/
+.packages
+
+# Flutter specific files
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE and editor folders
+.idea/
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# macOS specific files
+.DS_Store
+
+# Coverage and environment files
+.env
+.coverage/
+.coverage
+coverage/
+
+# Logs and temp files
+*.log
+logs/
+tmp/
+temp/
+history/
+
+# Swap and checkpoint files
+*.swp
+*.swo
+.ipynb_checkpoints/

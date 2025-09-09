@@ -1,0 +1,15 @@
+name: shared_lib
+description: A Dart library for parsing JSON with token-based representation and pretty-printing.
+version: 1.0.0
+repository: https://github.com/joechung2008/json-dart
+publish_to: none
+
+environment:
+  sdk: ^3.9.2
+
+resolution: workspace
+
+dev_dependencies:
+  coverage: ^1.8.0
+  lints: ^6.0.0
+  test: ^1.25.6

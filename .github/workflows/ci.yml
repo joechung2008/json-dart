@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dart-version: ["3.9.x"]
+        package: ["console_app", "server_app", "shared_lib"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Dart SDK ${{ matrix.dart-version }}
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.dart-version }}
+
+      - name: Install dependencies and build ${{ matrix.package }}
+        run: dart pub get
+        working-directory: packages/${{ matrix.package }}
+
+      - name: Install covered tool
+        run: dart pub global activate covered
+
+      - name: Run tests with coverage
+        run: dart test --coverage=coverage
+        working-directory: packages/${{ matrix.package }}
+
+      - name: Generate coverage report with covered
+        run: covered
+        working-directory: packages/${{ matrix.package }}
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html-${{ matrix.package }}
+          path: packages/${{ matrix.package }}/coverage/
+          if-no-files-found: ignore
