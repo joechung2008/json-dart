@@ -54,7 +54,7 @@ To compile the executable applications:
 
 ```cmd
 # Build all executables from root (Windows batch)
-./bin/build_all.bat
+./bin/build_all.cmd
 ```
 
 ```powershell
@@ -63,13 +63,29 @@ To compile the executable applications:
 ```
 
 ```bash
-# Build all executables from root (Bash)
-./bin/build_all.sh
+# Build all executables from root (Bash/Linux)
+./bin/build_all
 ```
 
+#### Build on Linux with Custom Output Paths
+
+Use the `-o` option to specify custom output paths:
+
+```bash
+# Build console app to custom location
+dart compile exe -o out/console_app packages/console_app/bin/console_app.dart
+
+# Build server app to custom location
+dart compile exe -o out/server packages/server_app/bin/server.dart
 ```
-# Or build individually
+
+#### Build Individually (Default Locations)
+
+```bash
+# Build console app (outputs to packages/console_app/bin/console_app)
 dart compile exe packages/console_app/bin/console_app.dart
+
+# Build server app (outputs to packages/server_app/bin/server)
 dart compile exe packages/server_app/bin/server.dart
 ```
 

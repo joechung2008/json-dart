@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "Building all executables..."
-dart compile exe packages/console_app/bin/console_app.dart
-dart compile exe packages/server_app/bin/server.dart
+mkdir -p out
+dart compile exe -o out/console_app packages/console_app/bin/console_app.dart
+dart compile exe -o out/server packages/server_app/bin/server.dart
 echo "Build complete."
