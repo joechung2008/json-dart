@@ -3,6 +3,7 @@
 build/
 .pub/
 .packages
+**/*.exe
 
 # Flutter specific files
 .flutter-plugins
