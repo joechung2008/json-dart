@@ -15,13 +15,13 @@ MIT
 This workspace contains three packages:
 
 - **console_app**: A command-line JSON parser that reads from stdin and pretty-prints parse trees
-- **server_app**: A server application using the shelf package and Docker
+- **shelf_app**: A server application using the `shelf` package and Docker
 - **shared_lib**: A Dart library for parsing JSON with token-based representation and pretty-printing
 
 ## Prerequisites
 
 - Dart SDK ^3.9.2
-- Docker (for server_app)
+- Docker (for `shelf_app`)
 
 ## Building
 
@@ -29,22 +29,6 @@ This workspace contains three packages:
 
 ```bash
 # From the root directory
-dart pub get
-```
-
-### Build Individual Packages
-
-```bash
-# Console app
-cd packages/console_app
-dart pub get
-
-# Server app
-cd packages/server_app
-dart pub get
-
-# Shared library
-cd packages/shared_lib
 dart pub get
 ```
 
@@ -67,40 +51,12 @@ To compile the executable applications:
 ./bin/build_all
 ```
 
-#### Build on Linux with Custom Output Paths
-
-Use the `-o` option to specify custom output paths:
-
-```bash
-# Build console app to custom location
-dart compile exe -o out/console_app packages/console_app/bin/console_app.dart
-
-# Build server app to custom location
-dart compile exe -o out/server packages/server_app/bin/server.dart
-```
-
-#### Build Individually (Default Locations)
-
-```bash
-# Build console app (outputs to packages/console_app/bin/console_app)
-dart compile exe packages/console_app/bin/console_app.dart
-
-# Build server app (outputs to packages/server_app/bin/server)
-dart compile exe packages/server_app/bin/server.dart
-```
-
 ## Formatting
 
 Format all Dart code in the workspace:
 
 ```bash
-# Format all packages
 dart format .
-
-# Or format individual packages
-dart format packages/console_app
-dart format packages/server_app
-dart format packages/shared_lib
 ```
 
 ## Linting
@@ -108,13 +64,7 @@ dart format packages/shared_lib
 Run static analysis on all packages:
 
 ```bash
-# Analyze all packages
 dart analyze .
-
-# Or analyze individual packages
-dart analyze packages/console_app
-dart analyze packages/server_app
-dart analyze packages/shared_lib
 ```
 
 ## Testing
@@ -122,12 +72,7 @@ dart analyze packages/shared_lib
 Run tests for all packages:
 
 ```bash
-# Test all packages
 dart test .
-
-# Or test individual packages
-dart test packages/server_app
-dart test packages/shared_lib
 ```
 
 ### Code Coverage
@@ -135,25 +80,13 @@ dart test packages/shared_lib
 Generate code coverage data from tests:
 
 ```bash
-# Generate coverage for all packages
 dart test --coverage=coverage .
-
-# Or generate coverage for individual packages
-dart test --coverage=coverage packages/console_app
-dart test --coverage=coverage packages/server_app
-dart test --coverage=coverage packages/shared_lib
 ```
 
 After running tests with coverage, format the coverage data for reporting:
 
 ```bash
-# Format coverage data to LCOV format
 dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages
-
-# Or for individual packages
-dart run coverage:format_coverage --lcov --in=packages/console_app/coverage --out=packages/console_app/coverage/lcov.info --packages=packages/console_app/.packages
-dart run coverage:format_coverage --lcov --in=packages/server_app/coverage --out=packages/server_app/coverage/lcov.info --packages=packages/server_app/.packages
-dart run coverage:format_coverage --lcov --in=packages/shared_lib/coverage --out=packages/shared_lib/coverage/lcov.info --packages=packages/shared_lib/.packages
 ```
 
 The coverage data will be available in LCOV format for use with coverage viewers or CI/CD systems.
@@ -167,13 +100,15 @@ The console app provides a command-line JSON parser.
 Pipe JSON data to the application:
 
 ```bash
-echo '{"name": "John", "age": 30}' | dart run packages/console_app
+echo '{"name": "John", "age": 30}' | dart run ./packages/console_app/bin/console_app.dart
 ```
+
+Note: `dart run` treats `packages/console_app` as a file path by default. When running from the workspace root you need to point to the script file (or run from inside the package directory) as shown above.
 
 ### With File Input
 
 ```bash
-dart run packages/console_app < input.json
+dart run ./packages/console_app/bin/console_app.dart < input.json
 ```
 
 ### Examples
@@ -181,7 +116,7 @@ dart run packages/console_app < input.json
 #### Valid JSON Object
 
 ```bash
-$ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | dart run packages/console_app
+$ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | dart run ./packages/console_app/bin/console_app.dart
 {
   "name": "Alice",
   "items": [
@@ -197,7 +132,7 @@ $ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | dart run package
 #### Valid JSON Array
 
 ```bash
-$ echo '[1, "hello", null, true]' | dart run packages/console_app
+$ echo '[1, "hello", null, true]' | dart run ./packages/console_app/bin/console_app.dart
 [
   1.0,
   "hello",
@@ -209,7 +144,7 @@ $ echo '[1, "hello", null, true]' | dart run packages/console_app
 #### Invalid JSON (shows error)
 
 ```bash
-$ echo '{"invalid": json}' | dart run packages/console_app
+$ echo '{"invalid": json}' | dart run ./packages/console_app/bin/console_app.dart
 Error: FormatException: expected array, false, null, number, object, string, or true, actual 'j'
 ```
 
@@ -224,8 +159,7 @@ The server app provides a REST API for JSON parsing. You can test it using the R
 2. Start the server:
 
 ```bash
-cd packages/server_app
-dart run bin/server.dart
+dart run ./packages/shelf_app/bin/server.dart
 ```
 
 ### Using REST Client

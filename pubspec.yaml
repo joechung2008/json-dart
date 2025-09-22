@@ -9,4 +9,4 @@ environment:
 workspace:
   - packages/shared_lib
   - packages/console_app
-  - packages/server_app
+  - packages/shelf_app

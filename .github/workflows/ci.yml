@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         dart-version: ["3.9.2"]
-        package: ["console_app", "server_app", "shared_lib"]
+        package: ["console_app", "shelf_app", "shared_lib"]
 
     steps:
       - uses: actions/checkout@v4

@@ -14,11 +14,11 @@ void main() {
     final currentDir = Directory.current.path;
 
     // Determine the working directory for the server process:
-    // - If already in 'server_app' directory, use current directory (null)
-    // - Otherwise, use relative path to server_app from workspace root
-    final workingDir = path.basename(currentDir) == 'server_app'
+    // - If already in 'shelf_app' directory, use current directory (null)
+    // - Otherwise, use relative path to shelf_app from workspace root
+    final workingDir = path.basename(currentDir) == 'shelf_app'
         ? null
-        : path.join('packages', 'server_app');
+        : path.join('packages', 'shelf_app');
 
     p = await Process.start(
       'dart',
