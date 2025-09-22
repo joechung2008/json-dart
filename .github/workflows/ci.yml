@@ -17,7 +17,7 @@ jobs:
       - name: Use Dart SDK
         uses: dart-lang/setup-dart@v1
         with:
-          sdk: '3.9.2'
+          sdk: '3.9.3'
 
       - name: Cache pub packages
         uses: actions/cache@v4
@@ -33,7 +33,7 @@ jobs:
           dart pub global activate coverage
 
       - name: Bootstrap workspace
-        run: melos bootstrap --no-git
+        run: melos bootstrap
 
       - name: Run workspace tests and produce combined coverage
         run: melos run test:ci
