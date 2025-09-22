@@ -2,39 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
+import 'package:shelf_app/server.dart' show startServer;
 import 'package:test/test.dart';
 
 void main() {
-  final port = '8000';
-  final host = 'http://localhost:$port';
-  late Process p;
+  late HttpServer server;
+  late String host;
 
   setUp(() async {
-    final currentDir = Directory.current.path;
-
-    // Determine the working directory for the server process:
-    // - If already in 'shelf_app' directory, use current directory (null)
-    // - Otherwise, use relative path to shelf_app from workspace root
-    final workingDir = path.basename(currentDir) == 'shelf_app'
-        ? null
-        : path.join('packages', 'shelf_app');
-
-    p = await Process.start(
-      'dart',
-      ['run', 'bin/server.dart'],
-      workingDirectory: workingDir,
-      environment: {'PORT': port},
-    );
-
-    // Wait for server to start and print to stdout.
-    await p.stdout.first;
-
-    // Give the server a moment to be fully ready
-    await Future.delayed(Duration(milliseconds: 500));
+    server = await startServer(address: InternetAddress.loopbackIPv4, port: 0);
+    host = 'http://localhost:${server.port}';
+    // Give the server a short moment to be ready.
+    await Future.delayed(Duration(milliseconds: 50));
   });
 
-  tearDown(() => p.kill());
+  tearDown(() async {
+    await server.close(force: true);
+  });
 
   group('JSON Parser API', () {
     test('Parse null', () async {

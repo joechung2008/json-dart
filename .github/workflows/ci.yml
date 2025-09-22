@@ -10,34 +10,37 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        dart-version: ["3.9.2"]
-        package: ["console_app", "shelf_app", "shared_lib"]
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - name: Use Dart SDK ${{ matrix.dart-version }}
+      - name: Use Dart SDK
         uses: dart-lang/setup-dart@v1
         with:
-          sdk: ${{ matrix.dart-version }}
+          sdk: '3.9.2'
 
-      - name: Install dependencies and build ${{ matrix.package }}
-        run: dart pub get
-        working-directory: packages/${{ matrix.package }}
+      - name: Cache pub packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-cache-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-cache-
 
-      - name: Run tests with coverage
-        run: dart test --coverage=coverage
-        working-directory: packages/${{ matrix.package }}
+      - name: Install workspace tools
+        run: |
+          dart pub global activate melos
+          dart pub global activate coverage
 
-      - name: Generate coverage report
-        run: dart run coverage:format_coverage -i coverage -o coverage/lcov.info --lcov
-        working-directory: packages/${{ matrix.package }}
+      - name: Bootstrap workspace
+        run: melos bootstrap --no-git
 
-      - name: Upload coverage
+      - name: Run workspace tests and produce combined coverage
+        run: melos run test:ci
+
+      - name: Upload combined lcov report
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-lcov-${{ matrix.package }}-${{ matrix.dart-version }}
-          path: packages/${{ matrix.package }}/coverage/
-          if-no-files-found: ignore
+          name: coverage-lcov
+          path: coverage/lcov.info
+          if-no-files-found: error

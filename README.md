@@ -17,6 +17,7 @@ This workspace contains three packages:
 - **console_app**: A command-line JSON parser that reads from stdin and pretty-prints parse trees
 - **shelf_app**: A server application using the `shelf` package and Docker
 - **shared_lib**: A Dart library for parsing JSON with token-based representation and pretty-printing
+- **dart_frog_app**: A server application using the `dart_frog` framework that exposes the same JSON parsing API
 
 ## Prerequisites
 
@@ -25,30 +26,11 @@ This workspace contains three packages:
 
 ## Building
 
-### Build All Packages
+### Build Packages
 
 ```bash
 # From the root directory
 dart pub get
-```
-
-### Build Executables
-
-To compile the executable applications:
-
-```batch
-REM Build all executables from root (Windows batch)
-./bin/build_all.cmd
-```
-
-```powershell
-# Build all executables from root (PowerShell)
-./bin/build_all.ps1
-```
-
-```bash
-# Build all executables from root (Bash/Linux)
-./bin/build_all
 ```
 
 ## Formatting
@@ -67,29 +49,34 @@ Run static analysis on all packages:
 dart analyze .
 ```
 
-## Testing
+## Developer workflow (Melos)
 
-Run tests for all packages:
+This workspace uses Melos to manage multi-package tasks. Prefer the Melos scripts below for day-to-day development and CI.
 
-```bash
-dart test .
-```
-
-### Code Coverage
-
-Generate code coverage data from tests:
+Bootstrap the workspace (install package dependencies for all packages):
 
 ```bash
-dart test --coverage=coverage .
+# From the repo root
+melos bootstrap
 ```
 
-After running tests with coverage, format the coverage data for reporting:
+Run all package tests (serial by default to avoid port conflicts in VS Code):
 
 ```bash
-dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.packages
+melos run test
 ```
 
-The coverage data will be available in LCOV format for use with coverage viewers or CI/CD systems.
+Run the CI test script which produces a combined LCOV report at `coverage/lcov.info`:
+
+```bash
+melos run test:ci
+```
+
+Build workspace executables (replaces `bin/build_all`):
+
+```bash
+melos run build
+```
 
 ## Running the CLI
 
@@ -97,18 +84,16 @@ The console app provides a command-line JSON parser.
 
 ### Basic Usage
 
-Pipe JSON data to the application:
+Pipe JSON data to the application (preferred via Melos from the workspace root):
 
 ```bash
-echo '{"name": "John", "age": 30}' | dart run ./packages/console_app/bin/console_app.dart
+echo '{"name": "John", "age": 30}' | melos run run:console
 ```
-
-Note: `dart run` treats `packages/console_app` as a file path by default. When running from the workspace root you need to point to the script file (or run from inside the package directory) as shown above.
 
 ### With File Input
 
 ```bash
-dart run ./packages/console_app/bin/console_app.dart < input.json
+melos run run:console < input.json
 ```
 
 ### Examples
@@ -116,7 +101,7 @@ dart run ./packages/console_app/bin/console_app.dart < input.json
 #### Valid JSON Object
 
 ```bash
-$ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | dart run ./packages/console_app/bin/console_app.dart
+$ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | melos run run:console
 {
   "name": "Alice",
   "items": [
@@ -132,7 +117,7 @@ $ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | dart run ./packa
 #### Valid JSON Array
 
 ```bash
-$ echo '[1, "hello", null, true]' | dart run ./packages/console_app/bin/console_app.dart
+$ echo '[1, "hello", null, true]' | melos run run:console
 [
   1.0,
   "hello",
@@ -144,29 +129,47 @@ $ echo '[1, "hello", null, true]' | dart run ./packages/console_app/bin/console_
 #### Invalid JSON (shows error)
 
 ```bash
-$ echo '{"invalid": json}' | dart run ./packages/console_app/bin/console_app.dart
+$ echo '{"invalid": json}' | melos run run:console
 Error: FormatException: expected array, false, null, number, object, string, or true, actual 'j'
 ```
 
 ## Testing the Server API
 
-The server app provides a REST API for JSON parsing. You can test it using the REST Client VS Code extension.
+The server apps provide a REST API for JSON parsing. You can test them using the REST Client VS Code extension.
 
 ### Prerequisites
 
 1. Install the [REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for VS Code
 
-2. Start the server:
+### Shelf server (shelf_app)
+
+Start the Shelf-based server (existing implementation):
 
 ```bash
-dart run ./packages/shelf_app/bin/server.dart
+melos run run:shelf
+```
+
+### Dart Frog server (dart_frog_app)
+
+Start the Dart Frog dev server (development-friendly):
+
+```bash
+melos run run:dart_frog
+```
+
+### Run the console app via Melos
+
+You can also run the console CLI from the workspace using Melos:
+
+```bash
+echo '{"name": "John"}' | melos run run:console
 ```
 
 ### Using REST Client
 
 1. Create `.rest` files in the `testdata/` folder at the root of the workspace
 
-2. Write HTTP requests in the following format:
+2. Write HTTP requests in the following format (both servers expose the same endpoint):
 
 ```http
 POST http://localhost:8000/api/v1/parse

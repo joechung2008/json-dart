@@ -1,6 +1,0 @@
-#!/bin/bash
-echo "Building all executables..."
-if [ ! -d out ]; then mkdir out; fi
-dart compile exe -o out/console_app packages/console_app/bin/console_app.dart
-dart compile exe -o out/shelf packages/shelf_app/bin/server.dart
-echo "Build complete."

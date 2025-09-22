@@ -36,3 +36,6 @@ history/
 *.swp
 *.swo
 .ipynb_checkpoints/
+
+# Generated Dart Frog server files
+.dart_frog/

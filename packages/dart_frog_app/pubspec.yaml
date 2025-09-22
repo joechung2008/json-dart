@@ -1,0 +1,19 @@
+name: dart_frog_app
+description: A Dart Frog server that exposes a small JSON API using the shared_lib.
+version: 1.0.0
+license: MIT
+repository: https://github.com/joechung2008/json-dart
+publish_to: none
+environment:
+  sdk: '>=3.9.0 <4.0.0'
+resolution: workspace
+dependencies:
+  dart_frog: ^1.2.3
+  shared_lib:
+    path: ../shared_lib
+dev_dependencies:
+  dart_frog_cli: ^1.2.9
+  lints: ^6.0.0
+  test: ^1.25.6
+  http: ^1.2.2
+  path: ^1.9.0

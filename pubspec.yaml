@@ -9,4 +9,41 @@ environment:
 workspace:
   - packages/shared_lib
   - packages/console_app
+  - packages/dart_frog_app
   - packages/shelf_app
+dev_dependencies:
+  melos: ^7.0.0
+melos:
+  scripts:
+    "build":
+      # Build workspace executables into out/
+      run: |
+        mkdir -p out
+        dart compile exe -o out/console_app packages/console_app/bin/console_app.dart
+        dart compile exe -o out/shelf packages/shelf_app/bin/server.dart
+        dart compile exe -o out/dart_frog packages/dart_frog_app/bin/server.dart
+      description: Compile executables for all apps into out/
+    "run:console":
+      # Run the console_app from the workspace root. Uses dart run with the
+      # script path so it works when invoked by melos.
+      run: dart run ./packages/console_app/bin/console_app.dart
+      description: Run the console_app (reads from stdin)
+    "run:dart_frog":
+      # Run the Dart Frog dev server from packages/dart_frog_app using a
+      # small Dart wrapper so it's cross-platform when invoked via melos.
+      run: dart run tool/dev_dart_frog.dart
+      description: Start dart_frog dev server (port 8000) from the workspace
+    "run:shelf":
+      # Run the shelf server from the workspace root using the package's
+      # server entrypoint.
+      run: dart run ./packages/shelf_app/bin/server.dart
+      description: Run the shelf_app server (port 8000)
+    "test":
+      run: melos exec -- "dart test -r expanded --chain-stack-traces"
+      description: Run dart test in each package
+    "test:ci":
+      # Cross-platform CI test: run per-package tests (with coverage) and
+      # produce a combined lcov report at coverage/lcov.info. Implemented in
+      # Dart so it runs the same on PowerShell and Unix shells.
+      run: dart run tool/ci_test.dart
+      description: Run package tests for CI and produce a combined lcov report
