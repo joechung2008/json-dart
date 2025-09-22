@@ -36,8 +36,8 @@ dart pub get
 
 To compile the executable applications:
 
-```cmd
-# Build all executables from root (Windows batch)
+```batch
+REM Build all executables from root (Windows batch)
 ./bin/build_all.cmd
 ```
 
