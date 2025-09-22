@@ -73,6 +73,7 @@ Future<void> main() async {
     'coverage:format_coverage',
     '--packages=.dart_tool/package_config.json',
     '--report-on=packages',
+    '--lcov',
     '--out=coverage/lcov.info',
   ];
 
