@@ -1,5 +1,5 @@
 name: json_dart_workspace
-description: A port of a TypeScript JSON example to Dart.
+description: A port of a TypeScript JSON parser to Dart.
 version: 1.0.0
 license: MIT
 repository: https://github.com/joechung2008/json-dart
