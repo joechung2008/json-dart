@@ -27,11 +27,16 @@ Future<int> main() async {
     final path = t['path']!;
     stdout.writeln('\nCompiling $name from $path...');
 
+    // On Windows the executable should end with .exe. Use Platform to
+    // determine the correct output filename.
+    final exeSuffix = Platform.isWindows ? '.exe' : '';
+    final outputPath = 'out/$name$exeSuffix';
+
     final result = await Process.run('dart', [
       'compile',
       'exe',
       '-o',
-      'out/$name',
+      outputPath,
       path,
     ], runInShell: true);
 
