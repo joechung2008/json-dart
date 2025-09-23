@@ -16,12 +16,8 @@ dev_dependencies:
 melos:
   scripts:
     "build":
-      # Build workspace executables into out/
-      run: |
-        mkdir -p out
-        dart compile exe -o out/console_app packages/console_app/bin/console_app.dart
-        dart compile exe -o out/shelf packages/shelf_app/bin/server.dart
-        dart compile exe -o out/dart_frog packages/dart_frog_app/bin/server.dart
+      # Build workspace executables into out/ using a cross-platform Dart tool.
+      run: dart run tool/build.dart
       description: Compile executables for all apps into out/
     "run:console":
       # Run the console_app from the workspace root. Uses dart run with the

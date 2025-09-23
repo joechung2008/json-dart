@@ -16,6 +16,9 @@ out/
 !.vscode/extensions.json
 !.vscode/settings.json
 
+# IntelliJ project files
+*.iml
+
 # macOS specific files
 .DS_Store
 
