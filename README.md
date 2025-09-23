@@ -12,7 +12,7 @@ MIT
 
 ## Packages
 
-This workspace contains three packages:
+This workspace contains four packages:
 
 - **console_app**: A command-line JSON parser that reads from stdin and pretty-prints parse trees
 - **shelf_app**: A server application using the `shelf` package and Docker
@@ -21,7 +21,7 @@ This workspace contains three packages:
 
 ## Prerequisites
 
-- Dart SDK ^3.9.2
+- Dart SDK >= 3.9.2
 - Docker (for `shelf_app`)
 
 ## Building
@@ -80,57 +80,11 @@ melos run build
 
 ## Running the CLI
 
-The console app provides a command-line JSON parser.
-
-### Basic Usage
-
-Pipe JSON data to the application (preferred via Melos from the workspace root):
+The console app provides a command-line JSON parser. Run it via Melos from the workspace root:
 
 ```bash
+# Example: pipe JSON to the console app
 echo '{"name": "John", "age": 30}' | melos run run:console
-```
-
-### With File Input
-
-```bash
-melos run run:console < input.json
-```
-
-### Examples
-
-#### Valid JSON Object
-
-```bash
-$ echo '{"name": "Alice", "items": [1, 2, {"nested": true}]}' | melos run run:console
-{
-  "name": "Alice",
-  "items": [
-    1.0,
-    2.0,
-    {
-      "nested": true
-    }
-  ]
-}
-```
-
-#### Valid JSON Array
-
-```bash
-$ echo '[1, "hello", null, true]' | melos run run:console
-[
-  1.0,
-  "hello",
-  null,
-  true
-]
-```
-
-#### Invalid JSON (shows error)
-
-```bash
-$ echo '{"invalid": json}' | melos run run:console
-Error: FormatException: expected array, false, null, number, object, string, or true, actual 'j'
 ```
 
 ## Testing the Server API
@@ -222,4 +176,4 @@ Content-Type: application/json
 
 - **Success (200)**: Returns the parsed JSON as `application/json`
 - **Parse Error (400)**: Returns `{"code": 400, "message": "error details"}`
-- **Invalid Content-Type (415)**: Returns `{"code": 415, "message": "Invalid Media Type"}`
+- **Unsupported Media Type (415)**: Returns `{"code": 415, "message": "Unsupported Media Type"}`
