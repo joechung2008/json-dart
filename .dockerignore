@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Dart build artifacts
+.dart_tool/
+pub-cache/
+build/
+
+# Tests (not needed for runtime)
+test/
+testdata/
+
+# Documentation and metadata
+README.md
+CHANGELOG.md
+LICENSE
+DOCKER.md
+analysis_options.yaml
+
+# Development tools
+tool/
+
+# CI/CD
+.github/
+
+# Temporary files
+*.tmp
+*.swp
