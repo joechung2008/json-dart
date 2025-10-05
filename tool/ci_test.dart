@@ -16,6 +16,8 @@ Future<void> main() async {
   // Run melos exec to run tests with coverage in each package (serial)
   print('Running package tests with coverage...');
   var exitCode = await runCommand([
+    'dart',
+    'run',
     'melos',
     'exec',
     '--concurrency=1',

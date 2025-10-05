@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dart: pub get",
+      "type": "shell",
+      "command": "dart pub get",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    },
+    {
+      "label": "melos: bootstrap",
+      "type": "shell",
+      "command": "dart run melos bootstrap",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    },
+    {
+      "label": "melos: build",
+      "type": "shell",
+      "command": "dart run melos run build",
+      "presentation": { "reveal": "always" },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "melos: test",
+      "type": "shell",
+      "command": "dart run melos exec -- \"dart test -r expanded --chain-stack-traces\"",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    }
+  ]
+}

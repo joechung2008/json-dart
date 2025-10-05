@@ -22,7 +22,8 @@ This workspace contains four packages:
 ## Prerequisites
 
 - Dart SDK >= 3.9.2
-- Docker (for `shelf_app`)
+- Docker
+- Melos
 
 ## Building
 
@@ -57,34 +58,38 @@ Bootstrap the workspace (install package dependencies for all packages):
 
 ```bash
 # From the repo root
-melos bootstrap
-```
-
-Run all package tests (serial by default to avoid port conflicts in VS Code):
-
-```bash
-melos run test
-```
-
-Run the CI test script which produces a combined LCOV report at `coverage/lcov.info`:
-
-```bash
-melos run test:ci
+dart pub get
+dart run melos bootstrap
 ```
 
 Build workspace executables (replaces `bin/build_all`):
 
 ```bash
-melos run build
+dart run melos run build
+```
+
+Run all package tests:
+
+```bash
+dart run melos exec -- "dart test -r expanded --chain-stack-traces"
+```
+
+Run the CI test script to produce a combined LCOV report at `coverage/lcov.info`:
+
+```bash
+dart run melos run test:ci
 ```
 
 ## Running the CLI
 
-The console app provides a command-line JSON parser. Run it via Melos from the workspace root:
+The console app provides a command-line JSON parser.
 
 ```bash
+# Enter JSON into the console app
+./out/console_app
+
 # Example: pipe JSON to the console app
-echo '{"name": "John", "age": 30}' | melos run run:console
+echo '{"name": "John", "age": 30}' | ./out/console_app
 ```
 
 ## Testing the Server API
@@ -100,7 +105,7 @@ The server apps provide a REST API for JSON parsing. You can test them using the
 Start the Shelf-based server (existing implementation):
 
 ```bash
-melos run run:shelf
+dart run melos run run:shelf
 ```
 
 ### Dart Frog server (dart_frog_app)
@@ -108,15 +113,7 @@ melos run run:shelf
 Start the Dart Frog dev server (development-friendly):
 
 ```bash
-melos run run:dart_frog
-```
-
-### Run the console app via Melos
-
-You can also run the console CLI from the workspace using Melos:
-
-```bash
-echo '{"name": "John"}' | melos run run:console
+dart run melos run run:dart_frog
 ```
 
 ### Using REST Client
